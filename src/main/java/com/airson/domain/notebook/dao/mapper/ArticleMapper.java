@@ -3,6 +3,7 @@ package com.airson.domain.notebook.dao.mapper;
 import com.airson.domain.notebook.dao.po.Article;
 import org.apache.ibatis.annotations.*;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @remark 视频点名结果表（调度台上报的原始数据）
  * @time 2019-11-25 12:18:03
  */
+@Repository
 public interface ArticleMapper {
 
     @Select("SELECT * FROM tech_article WHERE id = #{id}")
