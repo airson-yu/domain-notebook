@@ -23,7 +23,7 @@ public interface ArticleMapper {
     Article load(long id);
 
     @Select("SELECT * FROM tech_article")
-    Page<Article> loadList();
+    Page<Article> list();
 
     //@SelectKey(statement = "select last_insert_id()", keyProperty = "id", before = false, resultType = Integer.class)
     @Insert("INSERT INTO tech_article(user_d, title, content, create_time) VALUES(#{userId}, #{title}, #{content}, NOW())")

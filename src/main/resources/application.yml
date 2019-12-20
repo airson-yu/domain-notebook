@@ -31,15 +31,12 @@ spring:
             test-on-borrow: false
             test-on-return: false
             max-open-prepared-statements: 20
-            #打开removeAbandoned功能
-            remove-abandoned: true
+            #打开removeAbandoned功能 WARN : removeAbandoned is true, not use in production
+            remove-abandoned: false
             #1800秒，也就是30分钟
             remove-abandoned-timeout: 1800
             #关闭abanded连接时输出错误日志
             log-abandoned: true
-
-    thymeleaf:
-        enabled: false
     kafka:
         bootstrap-servers: 172.81.216.81:9092,175.24.103.167:9092
         #bootstrap-servers: 175.24.103.167:9092
@@ -77,4 +74,14 @@ spring:
                 min-idle: 0
                 max-idle: 8
                 max-wait: 1ms
-
+    thymeleaf:
+        enabled: false
+        cache: false
+    mvc:
+        view:
+            prefix: /static/v/
+            suffix: .html
+        static-path-pattern: /static/**
+    resources:
+        chain:
+            cache: false

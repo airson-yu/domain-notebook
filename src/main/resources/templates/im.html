@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=”http://www.thymeleaf.org”>
+<head>
+    <meta charset="UTF-8">
+    <title>再谈mysql锁机制及原理—锁的诠释 - 掘金</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="https://b-gold-cdn.xitu.io/favicons/v2/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://b-gold-cdn.xitu.io/favicons/v2/favicon-16x16.png">
+
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+
+    <el-container>
+        <!--<el-header>Header</el-header>-->
+        <el-main>
+            <el-row>
+                <el-col :span="24" style="height: 300px;overflow: auto;padding: 3px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
+                    <div v-for="item in im_list">
+                        <div>{{item.content}}</div>
+                    </div>
+                </el-col>
+                <el-col :span="24" style="margin: 5px 0px;">
+                    <div>
+                        <el-input v-model="text_content" placeholder="请输入内容"></el-input>
+                    </div>
+                    <div style="margin: 5px 0px;">
+                        <el-button type="primary" @click="send_im_msg"><span style="font-size: larger;">发送</span></el-button>
+                        <el-button type="primary" @click="jump"><span style="font-size: larger;">jump</span></el-button>
+                    </div>
+                </el-col>
+
+            </el-row>
+        </el-main>
+        <el-footer>Footer</el-footer>
+    </el-container>
+
+    <!--<el-button @click="visible = true">Button</el-button>
+    <el-dialog :visible.sync="visible" title="Hello world">
+        <p>Try Element</p>
+    </el-dialog>-->
+
+</div>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="/static/js/im.js"></script>
+</body>
+</html>
