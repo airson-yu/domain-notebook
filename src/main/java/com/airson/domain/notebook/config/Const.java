@@ -21,4 +21,10 @@ public class Const {
     public static final String MQ_TOPIC_REDIS    = "t-redis";
     public static final String MQ_TOPIC_NOTEBOOK = "t-notebook";
 
+    // WEBSOCKET
+    public static final String WS_TOPIC         = "/topic/greetings";
+    public static final String WS_ENDPOINT      = "/gs-guide-websocket";
+    public static final String WS_APP_PREFIX    = "/app";
+    public static final String WS_HELLO_MAPPING = "/hello";
+
 }

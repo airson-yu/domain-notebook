@@ -75,13 +75,22 @@ spring:
                 max-idle: 8
                 max-wait: 1ms
     thymeleaf:
-        enabled: false
+        enabled: true
         cache: false
     mvc:
-        view:
-            prefix: /static/v/
-            suffix: .html
+#        view:
+#            prefix: /static/v/
+#            suffix: .html
         static-path-pattern: /static/**
     resources:
         chain:
             cache: false
+            enabled: true
+        cache:
+            period: 0
+            cachecontrol:
+                no-store: true
+                no-cache: true
+                max-age: 0
+                s-max-age: 0
+#        static-locations: classpath:/resources/static/**
