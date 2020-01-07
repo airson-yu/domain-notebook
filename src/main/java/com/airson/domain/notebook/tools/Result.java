@@ -1,5 +1,6 @@
 package com.airson.domain.notebook.tools;
 
+import com.airson.domain.notebook.config.ResponseCode;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -284,6 +285,10 @@ public class Result {
         json.put(BaseTip.key_msg, msg);
         json.put(BaseTip.key_code, code);
         return json;
+    }
+
+    public static JSONObject failure(JSONObject json, ResponseCode responseCode) {
+        return failure(json, responseCode.getMessage(), responseCode.getCode());
     }
 
     public static JSONObject failure_grid(JSONObject json, String msg, String code) {

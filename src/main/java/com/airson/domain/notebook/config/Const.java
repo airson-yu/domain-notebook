@@ -22,9 +22,9 @@ public class Const {
     public static final String MQ_TOPIC_NOTEBOOK = "t-notebook";
 
     // WEBSOCKET
-    public static final String WS_TOPIC         = "/topic/greetings";
-    public static final String WS_ENDPOINT      = "/gs-guide-websocket";
-    public static final String WS_APP_PREFIX    = "/app";
-    public static final String WS_HELLO_MAPPING = "/hello";
+    public static final String WS_MSG_TOPIC      = "/topic/greetings";
+    public static final String WS_MSG_ENDPOINT   = "/chat";
+    public static final String WS_MSG_APP_PREFIX = "/app";
+    public static final String WS_MSG_TOPIC_PREFIX = "/topic";
 
 }

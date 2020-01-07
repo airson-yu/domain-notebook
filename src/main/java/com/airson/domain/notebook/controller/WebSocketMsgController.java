@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,30 +22,31 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
 
 /**
  * TODO
  *
  * @author airson
  */
-@Controller
 //@Api(value = "IM相关接口", tags = "IM")
-@RequestMapping(value = "/v1/im")
-public class WsController {
+@Component
+public class WebSocketMsgController {
 
     @Autowired
     private ImHandler imHandler;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @MessageMapping(Const.WS_HELLO_MAPPING)
-    @SendTo(Const.WS_TOPIC)
+    /*@MessageMapping(Const.WS_MSG_ENDPOINT)
+    @SendTo(Const.WS_MSG_TOPIC)
     public WebSocketResponse greeting(WebSocketRequest message) throws Exception {
         // 模拟延时，以便测试客户端是否在异步工作
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
         WebSocketResponse response = new WebSocketResponse();
         response.setContent("Hello, " + HtmlUtils.htmlEscape(message.getContent()) + "!");
         return response;
-    }
+    }*/
 
 }
