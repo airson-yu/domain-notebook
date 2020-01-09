@@ -1,6 +1,9 @@
 package com.airson.domain.notebook.controller;
 
+import com.airson.domain.notebook.vo.Message;
 import com.airson.domain.notebook.vo.UserSession;
+import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +40,8 @@ public class WebSocketServer {
     private static Logger logger = LoggerFactory.getLogger(WebSocketServer.class);
 
     @PostConstruct
-    public void init(Session session, @PathParam("token") String token) {
-        logger.debug("websocket 加载:{}", token);
+    public void init() {
+        logger.debug("websocket init");
     }
 
     /**
@@ -47,10 +50,12 @@ public class WebSocketServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) {
 
-        Object sessionObj = redisTemplate.opsForValue().get(token);
-        if (null != sessionObj) {
-            UserSession userSession = (UserSession) sessionObj;
-            //redisTemplate.opsForValue().set();
+        Object userSessionObj = redisTemplate.opsForValue().get(token);
+        if (null != userSessionObj) {
+            UserSession userSession = (UserSession) userSessionObj;
+            userSession.setWsSessionId(session.getId());
+            userSession.setSession(session);
+            redisTemplate.opsForValue().set(session.getId(), token);
         }
         sessionSet.add(session);
         int cnt = onlineCount.incrementAndGet(); // 在线数加1
@@ -63,8 +68,20 @@ public class WebSocketServer {
      */
     @OnClose
     public void onClose(Session session) {
+        Object tokenObj = redisTemplate.opsForValue().get(session.getId());
         sessionSet.remove(session);
         int cnt = onlineCount.decrementAndGet();
+        if (null != tokenObj) {
+            redisTemplate.delete(session.getId());
+            logger.debug("remove wsSession:{}", session.getId());
+            Object userSessionObj = redisTemplate.opsForValue().get(tokenObj);
+            if (null != userSessionObj) {
+                UserSession userSession = (UserSession) userSessionObj;
+                userSession.setSession(null);
+                userSession.setWsSessionId(null);
+                logger.debug("remove userSession:{}", tokenObj);
+            }
+        }
         logger.info("有连接关闭，当前连接数为：{}", cnt);
     }
 
@@ -75,7 +92,22 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        logger.info("来自客户端的消息：{}", message);
+        logger.debug("onMessage:{}", message);
+        if (StringUtils.isEmpty(message)) {
+            // invalid
+        } else {
+            Message msg = JSON.parseObject(message, Message.class);
+            Long receiver = msg.getReceiver();
+            Object userSessionObj = redisTemplate.opsForValue().get(receiver);
+            if (null == userSessionObj) {
+                logger.debug("onMessage receiver offline：{}", receiver);
+
+            } else {
+                UserSession userSession = (UserSession) userSessionObj;
+                sendMessage(userSession.getSession(), message);
+            }
+
+        }
         sendMessage(session, "收到消息，消息内容：" + message);
 
     }
@@ -88,7 +120,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        logger.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
+        logger.error("onError:{},session id:{}", error.getMessage(), session.getId());
         error.printStackTrace();
     }
 
@@ -100,9 +132,10 @@ public class WebSocketServer {
      */
     public static void sendMessage(Session session, String message) {
         try {
-            session.getBasicRemote().sendText(String.format("%s (From Server，Session ID=%s)", message, session.getId()));
+            //session.getBasicRemote().sendText(String.format("%s (From Server，Session ID=%s)", message, session.getId()));
+            session.getBasicRemote().sendText(message);
         } catch (IOException e) {
-            logger.error("发送消息出错：{}", e.getMessage());
+            logger.error("sendMessage fail:{}", e.getMessage());
             e.printStackTrace();
         }
     }
