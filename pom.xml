@@ -17,7 +17,7 @@
     <properties>
         <java.version>15</java.version>
         <mysql-connector.version>8.0.17</mysql-connector.version>
-        <fastjson.version>1.2.62</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <druid.version>1.1.21</druid.version>
     </properties>
 
